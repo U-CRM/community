@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+// @see http://docs.ucrm.apiary.io/
 const UCRM_API_VERSION = '1.0';
 
 // Example: https://ucrm-demo.ubnt.com
