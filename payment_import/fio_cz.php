@@ -143,9 +143,6 @@ function transformTransactionToUcrmPayment(array $transaction, ?int $clientId, ?
     ];
 }
 
-/**
- * @see http://docs.ucrm.apiary.io/#reference/payments/payments/post
- */
 function sendPaymentToUcrm(array $payment): void
 {
     $url = sprintf('%s/api/v%s/payments', UCRM_API_URL, UCRM_API_VERSION);
