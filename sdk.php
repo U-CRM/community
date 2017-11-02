@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+// Shared functions that can be used by all scripts.
+
+define('TEMP_DIR', __DIR__ . '/temp');
+
 function curlCommand(string $url, string $method, array $headers = [], ?string $data = null): void
 {
     $c = curl_init();

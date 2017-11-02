@@ -2,14 +2,19 @@
 
 declare(strict_types=1);
 
-require __DIR__ . '/../config.php';
+
+
+// This script is compatible with UCRM 2.8.0 and newer.
+// To use it copy these config files from config.dist to config directory and change to constants to your needs.
+require __DIR__ . '/../config/ucrm_api.php';
+require __DIR__ . '/../config/fio_cz.php';
+
+
+
 require __DIR__ . '/../sdk.php';
 
 define('FIO_CZ_SAVE_FILE', TEMP_DIR . '/fio_cz_last_payment.txt');
 
-/**
- * @see https://www.fio.cz/docs/cz/API_Bankovnictvi.pdf
- */
 function downloadTransactionsFromFio(\DateTimeImmutable $since, \DateTimeImmutable $until): array
 {
     $url = sprintf(
