@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
 // Shared functions that can be used by all scripts.
 
 define('TEMP_DIR', __DIR__ . '/temp');
 
-function curlCommand(string $url, string $method, array $headers = [], ?string $data = null): void
+function curlCommand($url, $method, array $headers = [], $data = null)
 {
     $c = curl_init();
     curl_setopt($c, CURLOPT_URL, $url);
@@ -40,7 +38,7 @@ function curlCommand(string $url, string $method, array $headers = [], ?string $
     curl_close($c);
 }
 
-function curlQuery(string $url, array $headers = [], array $parameters = []): array
+function curlQuery($url, array $headers = [], array $parameters = [])
 {
     if ($parameters) {
         $url .= '?' . http_build_query($parameters);

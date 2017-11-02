@@ -1,9 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
-
-
 // This script is compatible with UCRM 2.8.0 and newer.
 // To use it copy these config files from config.dist to config directory and change to constants to your needs.
 require __DIR__ . '/../config/ucrm_api.php';
@@ -15,7 +11,7 @@ require __DIR__ . '/../sdk.php';
 
 define('FIO_CZ_SAVE_FILE', TEMP_DIR . '/fio_cz_last_payment.txt');
 
-function downloadTransactionsFromFio(\DateTimeImmutable $since, \DateTimeImmutable $until): array
+function downloadTransactionsFromFio(\DateTimeImmutable $since, \DateTimeImmutable $until)
 {
     $url = sprintf(
         'https://www.fio.cz/ib_api/rest/periods/%s/%s/%s/transactions.json',
@@ -32,7 +28,7 @@ function downloadTransactionsFromFio(\DateTimeImmutable $since, \DateTimeImmutab
     );
 }
 
-function transformTransactionsData(array $data): array
+function transformTransactionsData(array $data)
 {
     $transactions = $data['accountStatement']['transactionList']['transaction'];
 
@@ -61,7 +57,7 @@ function transformTransactionsData(array $data): array
     );
 }
 
-function removeIncomingTransactions(array $transactions): array
+function removeIncomingTransactions(array $transactions)
 {
     return array_filter(
         $transactions,
@@ -71,7 +67,7 @@ function removeIncomingTransactions(array $transactions): array
     );
 }
 
-function matchClientFromUcrm(array $transaction, string $matchBy): ?array
+function matchClientFromUcrm(array $transaction, $matchBy)
 {
     $url = sprintf('%s/api/v%s/clients', UCRM_API_URL, UCRM_API_VERSION);
 
@@ -120,7 +116,7 @@ function matchClientFromUcrm(array $transaction, string $matchBy): ?array
     }
 }
 
-function transformTransactionToUcrmPayment(array $transaction, ?int $clientId, ?int $invoiceId): array
+function transformTransactionToUcrmPayment(array $transaction, $clientId, $invoiceId)
 {
     $date = DateTimeImmutable::createFromFormat('!Y-m-d', substr($transaction['date'], 0, 10));
 
@@ -143,7 +139,7 @@ function transformTransactionToUcrmPayment(array $transaction, ?int $clientId, ?
     ];
 }
 
-function sendPaymentToUcrm(array $payment): void
+function sendPaymentToUcrm(array $payment)
 {
     $url = sprintf('%s/api/v%s/payments', UCRM_API_URL, UCRM_API_VERSION);
 
@@ -158,17 +154,17 @@ function sendPaymentToUcrm(array $payment): void
     );
 }
 
-function saveLastProcessedTransaction($transaction): void
+function saveLastProcessedTransaction($transaction)
 {
     file_put_contents(FIO_CZ_SAVE_FILE, substr($transaction['date'], 0, 10) . PHP_EOL . $transaction['id']);
 }
 
-function saveLastProcessedDate(\DateTimeImmutable $date): void
+function saveLastProcessedDate(\DateTimeImmutable $date)
 {
     file_put_contents(FIO_CZ_SAVE_FILE, $date->format('Y-m-d'));
 }
 
-function determineStartDate(): array
+function determineStartDate()
 {
     $configStartDate = DateTimeImmutable::createFromFormat('!Y-m-d', FIO_CZ_START_DATE);
 
@@ -181,7 +177,7 @@ function determineStartDate(): array
     $rows = array_map('trim', $rows);
 
     $startDate = DateTimeImmutable::createFromFormat('!Y-m-d', $rows[0]);
-    $lastProcessedPayment = $rows[1] ?? null;
+    $lastProcessedPayment = isset($rows[1]) ? $rows[1] : null;
 
     if (! $lastProcessedPayment) {
         // The last day was processed entirely, go to the next day.
@@ -195,7 +191,7 @@ function determineStartDate(): array
     return [$startDate, $lastProcessedPayment];
 }
 
-function removePreviouslyProcessedTransactions(array $transactions, string $lastProcessedPayment): array
+function removePreviouslyProcessedTransactions(array $transactions, $lastProcessedPayment)
 {
     while ($transactions && (string) $transactions[0]['id'] !== $lastProcessedPayment) {
         array_shift($transactions);

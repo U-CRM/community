@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 // @see https://www.fio.cz/docs/cz/API_Bankovnictvi.pdf
 const FIO_CZ_API_TOKEN = '';
 
