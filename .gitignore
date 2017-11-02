@@ -1,2 +1,4 @@
-/temp
-/config
+/temp/*
+/config/*
+
+!.gitkeep
