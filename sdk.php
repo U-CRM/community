@@ -16,7 +16,7 @@ function curlCommand($url, $method, array $headers = [], $data = null)
         curl_setopt($c, CURLOPT_POSTFIELDS, $data);
     }
 
-    curl_setopt($c, CURLOPT_RETURNTRANSFER,true);
+    curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($c, CURLOPT_SSL_VERIFYPEER, true);
     curl_setopt($c, CURLOPT_SSL_VERIFYHOST, 2);
 
@@ -48,7 +48,7 @@ function curlQuery($url, array $headers = [], array $parameters = [])
     curl_setopt($c, CURLOPT_URL, $url);
     curl_setopt($c, CURLOPT_HTTPHEADER, $headers);
 
-    curl_setopt($c, CURLOPT_RETURNTRANSFER,true);
+    curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($c, CURLOPT_SSL_VERIFYPEER, true);
     curl_setopt($c, CURLOPT_SSL_VERIFYHOST, 2);
 
