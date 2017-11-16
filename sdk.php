@@ -1,5 +1,8 @@
 <?php
 
+// UCRM config file created from /config.dist/
+require_once __DIR__ . '/config/ucrm_api.php';
+
 // Shared functions that can be used by all scripts.
 
 define('TEMP_DIR', __DIR__ . '/temp');
