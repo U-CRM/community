@@ -19,7 +19,7 @@ function loadTaxes()
 
     $taxes = [];
     foreach ($results as $tax) {
-        $taxes[$tax['id']] = $tax['rate'];
+        $taxes[$tax['id']] = $tax['rate'] / 100;
     }
 
     return $taxes;
