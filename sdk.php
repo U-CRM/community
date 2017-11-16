@@ -75,3 +75,15 @@ function curlQuery($url, array $headers = [], array $parameters = [])
 
     return json_decode($result, true);
 }
+
+function ucrmApiQuery($endpoint, array $parameters = [])
+{
+    return curlQuery(
+        sprintf('%s/api/v%s/%s', UCRM_API_URL, UCRM_API_VERSION, $endpoint),
+        [
+            'Content-Type: application/json',
+            'X-Auth-App-Key: ' . UCRM_API_KEY,
+        ],
+        $parameters
+    );
+}
