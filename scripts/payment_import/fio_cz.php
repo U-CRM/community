@@ -1,7 +1,9 @@
 <?php
 
-// This script is compatible with UCRM 2.8.0 and newer.
-// To use it copy these config files from config.dist to config directory and change to constants to your needs.
+// Compatibility: This script is compatible with UCRM 2.8.0 and newer.
+// Purpose:       Import new payments from Fio CZ bank account to UCRM.
+
+// Copy these config files from config.dist to config directory and change to constants to your needs.
 require __DIR__ . '/../../config/ucrm_api.php';
 require __DIR__ . '/../../config/fio_cz.php';
 
