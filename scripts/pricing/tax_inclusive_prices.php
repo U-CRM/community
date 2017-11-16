@@ -102,26 +102,38 @@ function updateServices(array $taxes)
     $results = ucrmApiQuery('clients/services');
 
     foreach ($results as $service) {
-        if (
-            $service['tax1Id'] === null
-            || ! array_key_exists($service['tax1Id'], $taxes)
-        ) {
-            continue;
+        try {
+            updateService($service, $taxes);
+        } catch (CurlException $exception) {
+            // If service has a planned deferred change update will fail with error 404.
+            if (! $exception->getCode() === 404) {
+                throw $exception;
+            }
         }
-
-        updateServiceSurcharges($service, $taxes);
-
-        if (
-            ! array_key_exists('hasIndividualPrice', $service)
-            || ! $service['hasIndividualPrice']
-        ) {
-            continue;
-        }
-
-        $price = calculatePrice($service['price'], $taxes[$service['tax1Id']]);
-
-        ucrmApiCommand('clients/services/' . $service['id'], 'PATCH', ['price' => $price]);
     }
+}
+
+function updateService(array $service, array $taxes)
+{
+    if (
+        $service['tax1Id'] === null
+        || ! array_key_exists($service['tax1Id'], $taxes)
+    ) {
+        return;
+    }
+
+    updateServiceSurcharges($service, $taxes);
+
+    if (
+        ! array_key_exists('hasIndividualPrice', $service)
+        || ! $service['hasIndividualPrice']
+    ) {
+        return;
+    }
+
+    $price = calculatePrice($service['price'], $taxes[$service['tax1Id']]);
+
+    ucrmApiCommand('clients/services/' . $service['id'], 'PATCH', ['price' => $price]);
 }
 
 function updateServiceSurcharges(array $service, array $taxes)
