@@ -208,7 +208,7 @@ function removePreviouslyProcessedTransactions(array $transactions, $lastProcess
     return $transactions;
 }
 
-[$startDate, $lastProcessedPayment] = determineStartDate();
+list($startDate, $lastProcessedPayment) = determineStartDate();
 $endDate = new DateTimeImmutable('yesterday midnight');
 
 $transactions = downloadTransactionsFromFio($startDate, $endDate);
@@ -220,7 +220,7 @@ if ($lastProcessedPayment) {
 
 foreach ($transactions as $transaction) {
     printf('Processing transaction %s.', $transaction['id']);
-    [$clientId, $invoiceId] = matchClientFromUcrm($transaction, PAYMENT_MATCH_ATTRIBUTE);
+    list($clientId, $invoiceId) = matchClientFromUcrm($transaction, PAYMENT_MATCH_ATTRIBUTE);
     $payment = transformTransactionToUcrmPayment($transaction, $clientId, $invoiceId);
     sendPaymentToUcrm($payment);
     saveLastProcessedTransaction($transaction);
