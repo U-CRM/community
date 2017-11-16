@@ -133,7 +133,7 @@ function updateServiceSurcharges(array $service, array $taxes)
             continue;
         }
 
-        $price = calculatePrice($serviceSurcharge['price'], $taxes[$serviceSurcharge['tax1Id']]);
+        $price = calculatePrice($serviceSurcharge['price'], $taxes[$service['tax1Id']]);
 
         ucrmApiCommand('clients/services/service-surcharges/' . $serviceSurcharge['id'], 'PATCH', ['price' => $price]);
     }
