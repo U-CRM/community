@@ -71,10 +71,10 @@ function removeIncomingTransactions(array $transactions)
 
 function matchClientFromUcrm(array $transaction, $matchBy)
 {
-    $url = sprintf('%s/api/v%s/clients', UCRM_API_URL, UCRM_API_VERSION);
+    $endpoint = 'clients';
 
     if ($matchBy === 'invoiceNumber') {
-        $url = sprintf('%s/api/v%s/invoices', UCRM_API_URL, UCRM_API_VERSION);
+        $endpoint = 'invoices';
         $parameters = [
             'number' => $transaction['reference'],
         ];
@@ -93,14 +93,7 @@ function matchClientFromUcrm(array $transaction, $matchBy)
         ];
     }
 
-    $results = curlQuery(
-        $url,
-        [
-            'Content-Type: application/json',
-            'X-Auth-App-Key: ' . UCRM_API_KEY,
-        ],
-        $parameters
-    );
+    $results = ucrmApiQuery($endpoint, $parameters);
 
     switch (count($results)) {
         case 0:
