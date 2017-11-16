@@ -136,16 +136,10 @@ function transformTransactionToUcrmPayment(array $transaction, $clientId, $invoi
 
 function sendPaymentToUcrm(array $payment)
 {
-    $url = sprintf('%s/api/v%s/payments', UCRM_API_URL, UCRM_API_VERSION);
-
-    curlCommand(
-        $url,
+    ucrmApiCommand(
+        'payments',
         'POST',
-        [
-            'Content-Type: application/json',
-            'X-Auth-App-Key: ' . UCRM_API_KEY,
-        ],
-        json_encode((object) $payment)
+        $payment
     );
 }
 
