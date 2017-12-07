@@ -4,6 +4,10 @@
 
 define('TEMP_DIR', __DIR__ . '/temp');
 
+class CurlException extends \Exception
+{
+}
+
 function curlCommand($url, $method, array $headers = [], $data = null)
 {
     $c = curl_init();
@@ -26,13 +30,13 @@ function curlCommand($url, $method, array $headers = [], $data = null)
     $errno = curl_errno($c);
 
     if ($errno || $error) {
-        throw new \Exception("Error for request $url. Curl error $errno: $error");
+        throw new CurlException("Error for request $url. Curl error $errno: $error");
     }
 
     $httpCode = curl_getinfo($c, CURLINFO_HTTP_CODE);
 
     if ($httpCode < 200 || $httpCode >= 300) {
-        throw new \Exception("Error for request $url. HTTP error ($httpCode): $result");
+        throw new CurlException("Error for request $url. HTTP error ($httpCode): $result", $httpCode);
     }
 
     curl_close($c);
@@ -58,19 +62,19 @@ function curlQuery($url, array $headers = [], array $parameters = [])
     $errno = curl_errno($c);
 
     if ($errno || $error) {
-        throw new \Exception("Error for request $url. Curl error $errno: $error");
+        throw new CurlException("Error for request $url. Curl error $errno: $error");
     }
 
     $httpCode = curl_getinfo($c, CURLINFO_HTTP_CODE);
 
     if ($httpCode < 200 || $httpCode >= 300) {
-        throw new \Exception("Error for request $url. HTTP error ($httpCode): $result");
+        throw new CurlException("Error for request $url. HTTP error ($httpCode): $result", $httpCode);
     }
 
     curl_close($c);
 
     if (! $result) {
-        throw new \Exception("Error for request $url. Empty result.");
+        throw new CurlException("Error for request $url. Empty result.");
     }
 
     return json_decode($result, true);
