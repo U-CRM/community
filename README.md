@@ -1,7 +1,7 @@
 Community scripts for [UCRM](https://ucrm.ubnt.com/)
 ====
 
-These external scripts can be used to manage your UCRM data, such as imports, exports, batch data modifications or integrations with accounting softwares or other tools.
+These external API scripts can be used to manage your UCRM data, such as imports, exports, batch data modifications or integrations with accounting softwares or other tools.
 
 Usage
 ----
