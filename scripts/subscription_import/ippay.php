@@ -16,7 +16,7 @@ require __DIR__ . '/../../sdk.php';
 function sendPaymentPlanToUcrm(array $paymentPlan)
 {
     ucrmApiCommand(
-        'clients/payment-plans',
+        'payment-plans',
         'POST',
         $paymentPlan
     );
