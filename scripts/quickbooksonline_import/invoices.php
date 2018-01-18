@@ -26,7 +26,7 @@ $dataService = DataService::Configure(array(
 
 function getQBClient($dataService, $ucrmClientId) {
     $customers = $dataService->Query(
-        sprintf('SELECT * FROM Customer WHERE DisplayName LIKE \'%%UCRMID-%d%%\'', $ucrmClientId)
+        sprintf('SELECT * FROM Customer WHERE DisplayName LIKE \'%%UCRMID-%d%%\' MAXRESULTS 1', $ucrmClientId)
     );
 
     if (! $customers) {
@@ -45,7 +45,7 @@ function createQBLineFromItem($dataService, $item) {
         'Name' => sprintf('%s (UCRMID-%s)', $item['label'], $item['id']) ,
         'Type' => 'Service',
         'IncomeAccountRef' => [
-            'value' => 30
+            'value' => 30 // Number of Income Account
         ],
     ]);
 
