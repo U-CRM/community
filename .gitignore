@@ -2,3 +2,4 @@
 /config/*
 
 !.gitkeep
+/scripts/quickbooksonline_import/vendor/
